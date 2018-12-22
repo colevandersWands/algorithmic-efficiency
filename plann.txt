@@ -1,0 +1,14 @@
+totes a rough approximation of efficiency, but a solid first introduction with practical exercises
+  to encourage refactoring and clarity, variable declarations and assignments don't count
+
+give some 
+  completed to study
+  started to finish
+  totes empty
+  grouped by test cases
+  grouped by strategy
+
+steps
+  study code & write test cases
+  insert steps_log
+  write steps_log test cases

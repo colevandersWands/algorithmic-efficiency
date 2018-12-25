@@ -2,6 +2,7 @@
 
 console.log('--- og code ---')
 
+  // https://github.com/samanthaming/freecodecamp-my-solutions/blob/master/intermediate-algorithm/12-sum-all-odd-fibonacci-numbers.js
   function sumFibs(num) {
     let prev = 0;
     let last = 1;
@@ -25,6 +26,7 @@ console.log('--- test cases ---');
       {name: '4', args: [4], expected: 5},
       {name: '5', args: [5], expected: 10},
       {name: '7', args: [7], expected: 10},
+      {name: '8', args: [8], expected: 10},
       {name: '10', args: [10], expected: 10},
       {name: '13', args: [13], expected: 23},
       {name: '17', args: [17], expected: 23},
@@ -33,7 +35,7 @@ console.log('--- test cases ---');
   run_tests(sumFibs, test_cases)
 
 
-console.log('--- expanded ---')
+console.log('--- expanded as needed ---')
 
   function expanded(num) {
     let prev = 0;
@@ -65,31 +67,62 @@ console.log('--- chunked ---')
     let last = 1;
     let sum = 0;
 
-    __build_sum: {
-
+    let build_sum; {
       while (last <= num) {
-        __conditionally_add_to_sum: {
 
-          let condition = last % 2 !== 0;
-          if (condition) {
+        let condition;
+        let add_to_sum; {
+           condition = last % 2 !== 0;
+        add_to_sum = condition };
+
+        if (condition) {
+          let new_sum; {
             sum += last;
-          }
+          new_sum = sum };
+        }
 
-        };
-        __update_utiliy_vars: {
-
+        let fresh_utils; {
           last += prev;
           prev = last - prev;
-
-        }
+        fresh_utils = {last, prev}}
       }
-
-    };
+    build_sum = sum };
 
     return sum;
   }
   run_tests(chunked, test_cases)
 
+console.log('--- chunk-logged ---')
+
+  function logged(num) {                 const log = [{num}];
+    let prev = 0;
+    let last = 1;
+    let sum = 0;                          log.push({prev, last, sum});
+
+    let build_sum; {
+      while (last <= num) { 
+
+        let condition;
+        let add_to_sum; {
+           condition = last % 2 !== 0;
+        add_to_sum = condition };         log.push({add_to_sum});
+
+        if (condition) {
+          let new_sum; {
+            sum += last;
+          new_sum = sum };                log.push({new_sum});
+        }
+
+        let fresh_utils; {
+          last += prev;
+          prev = last - prev;
+        fresh_utils = {last, prev}}       log.push({fresh_utils})
+      }
+    build_sum = sum };                    log.push({sum})
+
+    return {sum, log};
+  }
+  log_reports(logged, test_cases)
 
 
 console.log('--- count steps ---')
@@ -106,33 +139,31 @@ console.log('--- count steps ---')
       {name: '17', args: [17], expected: 45},
       {name: '21', args: [21], expected: 52},
     ];
-  function counted(num) {
-    let ops_count = 0;
-
+  function counted(num) {                   let ops_count = 0;
     let prev = 0;
     let last = 1;
     let sum = 0;
 
-    __build_sum: {
-
+    let build_sum; {
       while (last <= num) {                 ops_count++;
-        __conditionally_add_to_sum: {
 
-          let condition = last % 2 !== 0;   ops_count+=2;
-          if (condition) {                  ops_count++;
+        let condition;
+        let add_to_sum; {
+           condition = last % 2 !== 0;      ops_count+=2;
+        add_to_sum = condition };
+
+        if (condition) {                    ops_count++;
+          let new_sum; {
             sum += last;                    ops_count++;
-          }
+          new_sum = sum };
+        }
 
-        };
-        __update_utiliy_vars: {
-
+        let fresh_utils; {
           last += prev;                     ops_count++;
           prev = last - prev;               ops_count++;
-          
-        }
+        fresh_utils = {last, prev}}   
       }
-
-    };
+    build_sum = sum };
 
     return ops_count;
   }
@@ -142,39 +173,33 @@ console.log('--- count steps ---')
 
 console.log('--- explanation ---')
 
-  function explained(num) {
-    let ops_count = 0;
-    const log = []
-      log.push({ops: ops_count, args: {num}})
-
+  function explained(num) {                 let ops_count = 0;
+                                            const log = [{ops: ops_count, args: {num}}];
     let prev = 0;
     let last = 1;
-    let sum = 0;
-      log.push({ops: ops_count, initing: {prev, last, sum}})
+    let sum = 0;                            log.push({ops: ops_count, prev, last, sum});
 
-    __build_sum: {
-        let i = 1;
+    let build_sum; {
       while (last <= num) {                 ops_count++;
-        __conditionally_add_to_sum: {
 
-          let condition = last % 2 !== 0;   ops_count+=2;
-          if (condition) {                  ops_count++;
+        let condition;
+        let add_to_sum; {
+           condition = last % 2 !== 0;      ops_count+=2;
+        add_to_sum = condition };           log.push({ops: ops_count, add_to_sum});
+
+        if (condition) {                    ops_count++;
+          let new_sum; {
             sum += last;                    ops_count++;
-          }
-          log.push({ops: ops_count, update_sum: condition})
+          new_sum = sum };                  log.push({ops: ops_count, new_sum});
+        }
 
-        };
-        __update_utiliy_vars: {
-
+        let fresh_utils; {
           last += prev;                     ops_count++;
           prev = last - prev;               ops_count++;
-          
-        }
-          log.push({ops: ops_count, iteration: i})
-          i++;
-      }
+        fresh_utils = {last, prev}};        log.push({ops: ops_count, fresh_utils});       
+      } 
+    build_sum = sum };                      log.push({ops: ops_count, sum});
 
-    };
 
     return {ops: ops_count, log};
   }
@@ -184,48 +209,48 @@ console.log('--- explanation ---')
 
 
 
-  // testing utils
-  function run_tests(_target, _cases, _log) {
-    for (let t_case of _cases) {
-      let expected = t_case.expected;
+// testing utils
+function run_tests(_target, _cases, _log) {
+  for (let t_case of _cases) {
+    let expected = t_case.expected;
 
-      let actual;
-      let msg;
-      let log;
-      if (_log) {
-        log = _target(... t_case.args, true);
-        actual = log.result;
-      } else {
-        actual = _target(... t_case.args, false);
-      };
+    let actual;
+    let msg;
+    let log;
+    if (_log) {
+      log = _target(... t_case.args, true);
+      actual = log.result;
+    } else {
+      actual = _target(... t_case.args, false);
+    };
 
-      let pass;
-      if (typeof expected === 'object') {
-        const _actual = JSON.stringify(actual);
-        const _expected = JSON.stringify(expected);
-        pass = _actual === _expected;
-      } else {
-        pass = actual === expected;
-      };
+    let pass;
+    if (typeof expected === 'object') {
+      const _actual = JSON.stringify(actual);
+      const _expected = JSON.stringify(expected);
+      pass = _actual === _expected;
+    } else {
+      pass = actual === expected;
+    };
 
-      if (!pass && _log) {
-        console.log(`    ${t_case.name}: \n` + 
-            "actual: ", log, "\n" +
-            `expected: {${typeof expected}, ${expected}}`);
-      } else if (!pass) {
-        console.log(`${t_case.name}: \n` + 
-            `   actual: {${typeof actual}, ${actual}} \n` +
-            `   expected: {${typeof expected}, ${expected}}`);
-      };
+    if (!pass && _log) {
+      console.log(`    ${t_case.name}: \n` + 
+          "actual: ", log, "\n" +
+          `expected: {${typeof expected}, ${expected}}`);
+    } else if (!pass) {
+      console.log(`${t_case.name}: \n` + 
+          `   actual: {${typeof actual}, ${actual}} \n` +
+          `   expected: {${typeof expected}, ${expected}}`);
     };
   };
+};
 
-  function log_reports(_target, _cases) {
-    const report = {}
-    for (let t_case of _cases) {
-       report[t_case.name] = _target(...t_case.args) 
-    }
-    console.log(report)
+function log_reports(_target, _cases) {
+  const report = {}
+  for (let t_case of _cases) {
+     report[t_case.name] = _target(...t_case.args) 
   }
+  console.log(report)
+}
 
 }

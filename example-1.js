@@ -42,17 +42,19 @@ console.log('--- expand as needed ---')
     const d = [];
     let result = false;
 
-    while (b < c) { 
+    let while_cond = b < c;
+    while (while_cond) { 
       a--;
       b += a;
+      while_cond = b < c;
     }
         
-    let condition; { // = (a + 1) > 0
+    let if_cond; { // = (a + 1) > 0
       const step_1 = a + 1;
       const step_2 = step_1 > 0;
-      condition = step_2;
+      if_cond = step_2;
     }
-    if (condition) {
+    if (if_cond) {
       result = !result
     } 
 
@@ -70,18 +72,20 @@ console.log('--- chunked ---')
     let result = false;       
 
     let new_a_and_b; {
-      while (b < c) { 
+      let while_cond = b < c;
+      while (while_cond) { 
         a--;
         b += a;
+        while_cond = b < c;
       }
     new_a_and_b = {a, b} };   
        
     let toggle_result; { 
-      const condition = (a + 1) > 0;
-      if (condition) {
+      const if_cond = (a + 1) > 0;
+      if (if_cond) {
         result = !result
       }
-    toggle_result = condition}
+    toggle_result =if_cond}
 
                               
     return result;
@@ -96,18 +100,20 @@ console.log('--- chunk-logged ---')
     let result = false;                     log.push({c, d, result})
 
     let new_a_and_b; {
-      while (b < c) { 
+      let while_cond = b < c;
+      while (while_cond) { 
         a--;
         b += a;
+        while_cond = b < c;
       }
     new_a_and_b = {a, b} };                 log.push({new_a_and_b});
        
     let toggle_result; { 
-      const condition = (a + 1) > 0;
-      if (condition) {
+      const if_cond = (a + 1) > 0;
+      if (if_cond) {
         result = !result
       }
-    toggle_result = condition}              log.push({toggle_result})
+    toggle_result = if_cond}              log.push({toggle_result})
 
                                             log.push({result})
     return {result, log};
@@ -119,63 +125,65 @@ console.log('--- chunk-logged ---')
 console.log('--- count steps ---')
 
   const steps_tests = [
-      {name: '4, 5', args: [4, 5], expected: 11},
-      {name: '4, 10', args: [4, 10], expected: 11},
-      {name: '6, 2', args: [6, 2], expected: 11},
-      {name: '-3, -2', args: [-3, -2], expected: 3},
-      {name: '48, 50', args: [48, 50], expected: 11},
-      {name: '20, 50', args: [20, 50], expected: 11},
-      {name: '-2, 15', args: [-2, 15], expected: 3},
+      {name: '4, 5', args: [4, 5], expected: 15},
+      {name: '4, 10', args: [4, 10], expected: 15},
+      {name: '6, 2', args: [6, 2], expected: 15},
+      {name: '-3, -2', args: [-3, -2], expected: 5},
+      {name: '48, 50', args: [48, 50], expected: 15},
+      {name: '20, 50', args: [20, 50], expected: 15},
+      {name: '-2, 15', args: [-2, 15], expected: 5},
     ];
-  function counted(a, b) {                let ops_count = 0;
-    const c = a + b;                      ops_count++;
+  function counted(a, b) {                let ops = 0;
+    const c = a + b;                      ops++;
     const d = [];
     let result = false;
 
     let new_a_and_b; {
-      while (b < c) {                     ops_count++;
-        a--;                              ops_count++;
-        b += a;                           ops_count++;
+      let while_cond = b < c;             ops+=2;
+      while (while_cond) { 
+        a--;                              ops++;
+        b += a;                           ops++;
+        while_cond = b < c;               ops+=2;
       }
     new_a_and_b = {a, b} }
        
     let toggle_result; { 
-      const condition = (a + 1) > 0;      ops_count+=2;
-      if (condition) {                    ops_count++;
-        result = !result;                 ops_count++;
+      const if_cond = (a + 1) > 0;        ops+=2;
+      if (if_cond) {     
+        result = !toggle_result;          ops+=2;
       }
-    toggle_result = condition}
+    toggle_result = if_cond}
 
-    return ops_count;
+    return ops;
   } 
   run_tests(counted, steps_tests)
-  log_reports(counted, steps_tests)
 
 
 console.log('--- explanation ---')
 
-  function explained(a, b) {                let ops_count = 0;  
-                                            const log = [{ops: ops_count, a, b}];
-    const c = a + b;                        ops_count++;
+  function explained(a, b) {              let ops = 0;  
+                                          const log = [{ops, a, b}]
+    const c = a + b;                      ops++;
     const d = [];
-    let result = false;                     log.push({ops: ops_count, c, d, result})
+    let result = false;                   log.push({ops, c, d, result})
 
     let new_a_and_b; {
-      while (b < c) {                       ops_count++;
-        a--;                                ops_count++;    
-        b += a;                             ops_count++;
+      let while_cond = b < c;             ops+=2;
+      while (while_cond) { 
+        a--;                              ops++;
+        b += a;                           ops++;
+        while_cond = b < c;               ops+=2;
       }
-    new_a_and_b = {a, b} };                 log.push({ops: ops_count, new_a_and_b});
+    new_a_and_b = {a, b} }                log.push({ops, new_a_and_b});
        
     let toggle_result; { 
-      const condition = (a + 1) > 0;        ops_count+=2;
-      if (condition) {                      ops_count++;
-        result = !result;                   ops_count++;
+      const if_cond = (a + 1) > 0;        ops+=2;
+      if (if_cond) {     
+        result = !toggle_result;          ops+=2;
       }
-    toggle_result = condition}              log.push({ops: ops_count, toggle_result})
+    toggle_result = if_cond}            log.push({ops, toggle_result})
 
-                                            log.push({ ops:ops_count, result})
-    return {ops: ops_count, log};
+    return {ops, log};
   } 
   log_reports(explained, test_cases)
 

@@ -42,17 +42,20 @@ console.log('--- expanded as needed ---')
     let last = 1;
     let sum = 0;
 
-    while (last <= num) {
-      let condition; { // = last % 2 !== 0
+    let while_cond = last <= num;
+    while (while_cond) {
+      let if_cond; { // = last % 2 !== 0
         const step_1 = last % 2;
         const step_2 = step_1 !== 0;
-        condition = step_2;
+        if_cond = step_2;
       }
-      if (condition) {
+      if (if_cond) {
         sum += last;
       }
       last += prev;
       prev = last - prev;
+
+      while_cond = last <= num;
     }
 
     return sum;
@@ -68,14 +71,15 @@ console.log('--- chunked ---')
     let sum = 0;
 
     let build_sum; {
-      while (last <= num) {
+      let while_cond = last <= num;
+      while (while_cond) {
 
-        let condition;
+        let if_cond;
         let add_to_sum; {
-           condition = last % 2 !== 0;
-        add_to_sum = condition };
+           if_cond = last % 2 !== 0;
+        add_to_sum = if_cond };
 
-        if (condition) {
+        if (if_cond) {
           let new_sum; {
             sum += last;
           new_sum = sum };
@@ -85,6 +89,8 @@ console.log('--- chunked ---')
           last += prev;
           prev = last - prev;
         fresh_utils = {last, prev}}
+
+        while_cond = last <= num;
       }
     build_sum = sum };
 
@@ -100,14 +106,15 @@ console.log('--- chunk-logged ---')
     let sum = 0;                          log.push({prev, last, sum});
 
     let build_sum; {
-      while (last <= num) { 
+      let while_cond = last <= num;       log.push({while_cond})
+      while (while_cond) {
 
-        let condition;
+        let if_cond;
         let add_to_sum; {
-           condition = last % 2 !== 0;
-        add_to_sum = condition };         log.push({add_to_sum});
+           if_cond = last % 2 !== 0;
+        add_to_sum = if_cond };           log.push({add_to_sum})
 
-        if (condition) {
+        if (if_cond) {
           let new_sum; {
             sum += last;
           new_sum = sum };                log.push({new_sum});
@@ -117,6 +124,8 @@ console.log('--- chunk-logged ---')
           last += prev;
           prev = last - prev;
         fresh_utils = {last, prev}}       log.push({fresh_utils})
+
+        while_cond = last <= num;         log.push({while_cond})
       }
     build_sum = sum };                    log.push({sum})
 
@@ -128,16 +137,16 @@ console.log('--- chunk-logged ---')
 console.log('--- count steps ---')
 
   const steps_tests = [
-      {name: '3', args: [3], expected: 26},
-      {name: '4', args: [4], expected: 26},
-      {name: '5', args: [5], expected: 33},
-      {name: '7', args: [7], expected: 33},
-      {name: '8', args: [8], expected: 38},
-      {name: '9', args: [9], expected: 38},
-      {name: '10', args: [10], expected: 38},
-      {name: '13', args: [13], expected: 45},
-      {name: '17', args: [17], expected: 45},
-      {name: '21', args: [21], expected: 52},
+      {name: '3', args: [3], expected: 29},
+      {name: '4', args: [4], expected: 29},
+      {name: '5', args: [5], expected: 36},
+      {name: '7', args: [7], expected: 36},
+      {name: '8', args: [8], expected: 42},
+      {name: '9', args: [9], expected: 42},
+      {name: '10', args: [10], expected: 42},
+      {name: '13', args: [13], expected: 49},
+      {name: '17', args: [17], expected: 49},
+      {name: '21', args: [21], expected: 56},
     ];
   function counted(num) {                   let ops_count = 0;
     let prev = 0;
@@ -145,14 +154,15 @@ console.log('--- count steps ---')
     let sum = 0;
 
     let build_sum; {
-      while (last <= num) {                 ops_count++;
+      let while_cond = last <= num;         ops_count+=2
+      while (while_cond) {               
 
-        let condition;
+        let if_cond;
         let add_to_sum; {
-           condition = last % 2 !== 0;      ops_count+=2;
-        add_to_sum = condition };
+           if_cond = last % 2 !== 0;        ops_count+=2;
+        add_to_sum = if_cond };
 
-        if (condition) {                    ops_count++;
+        if (if_cond) {                    
           let new_sum; {
             sum += last;                    ops_count++;
           new_sum = sum };
@@ -161,7 +171,9 @@ console.log('--- count steps ---')
         let fresh_utils; {
           last += prev;                     ops_count++;
           prev = last - prev;               ops_count++;
-        fresh_utils = {last, prev}}   
+        fresh_utils = {last, prev}} 
+
+        while_cond = last <= num;           ops_count+=2;  
       }
     build_sum = sum };
 
@@ -173,32 +185,37 @@ console.log('--- count steps ---')
 
 console.log('--- explanation ---')
 
-  function explained(num) {                 let ops_count = 0;
-                                            const log = [{ops: ops_count, args: {num}}];
+  function explained(num) {                   let ops_count = 0;
+                                              const log = [{ops: ops_count, args: {num}}];
     let prev = 0;
     let last = 1;
-    let sum = 0;                            log.push({ops: ops_count, prev, last, sum});
+    let sum = 0;                              log.push({ops: ops_count, prev, last, sum});
 
     let build_sum; {
-      while (last <= num) {                 ops_count++;
+      let while_cond = last <= num;           ops_count+=2
+      while (while_cond) {  
 
-        let condition;
+        let if_cond;
         let add_to_sum; {
-           condition = last % 2 !== 0;      ops_count+=2;
-        add_to_sum = condition };           log.push({ops: ops_count, add_to_sum});
+           if_cond = last % 2 !== 0;          ops_count+=2;
+        add_to_sum = if_cond };               log.push({ops: ops_count, add_to_sum});
 
-        if (condition) {                    ops_count++;
+        if (if_cond) {                        
           let new_sum; {
-            sum += last;                    ops_count++;
-          new_sum = sum };                  log.push({ops: ops_count, new_sum});
+            sum += last;                      ops_count++;
+                                              log.push({ops: ops_count, new_sum});
+          new_sum = sum };                    
         }
 
         let fresh_utils; {
-          last += prev;                     ops_count++;
-          prev = last - prev;               ops_count++;
-        fresh_utils = {last, prev}};        log.push({ops: ops_count, fresh_utils});       
+          last += prev;                       ops_count++;
+          prev = last - prev;                 ops_count++;
+        fresh_utils = {last, prev}};          log.push({ops: ops_count, fresh_utils});       
+
+        while_cond = last <= num;             ops_count+=2;
+                                              log.push({ops: ops_count, while_cond})
       } 
-    build_sum = sum };                      log.push({ops: ops_count, sum});
+    build_sum = sum };                        log.push({ops: ops_count, build_sum});
 
 
     return {ops: ops_count, log};

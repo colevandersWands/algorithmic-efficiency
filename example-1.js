@@ -125,12 +125,12 @@ console.log('--- chunk-logged ---')
 console.log('--- count steps ---')
 
   const steps_tests = [
-      {name: '4, 5', args: [4, 5], expected: 15},
-      {name: '4, 10', args: [4, 10], expected: 15},
-      {name: '6, 2', args: [6, 2], expected: 15},
+      {name: '4, 5', args: [4, 5], expected: 14},
+      {name: '4, 10', args: [4, 10], expected: 14},
+      {name: '6, 2', args: [6, 2], expected: 14},
       {name: '-3, -2', args: [-3, -2], expected: 5},
-      {name: '48, 50', args: [48, 50], expected: 15},
-      {name: '20, 50', args: [20, 50], expected: 15},
+      {name: '48, 50', args: [48, 50], expected: 14},
+      {name: '20, 50', args: [20, 50], expected: 14},
       {name: '-2, 15', args: [-2, 15], expected: 5},
     ];
   function counted(a, b) {                let ops = 0;
@@ -150,7 +150,7 @@ console.log('--- count steps ---')
     let toggle_result; { 
       const if_cond = (a + 1) > 0;        ops+=2;
       if (if_cond) {     
-        result = !toggle_result;          ops+=2;
+        result = !toggle_result;          ops++;
       }
     toggle_result = if_cond}
 
@@ -179,7 +179,7 @@ console.log('--- explanation ---')
     let toggle_result; { 
       const if_cond = (a + 1) > 0;        ops+=2;
       if (if_cond) {     
-        result = !toggle_result;          ops+=2;
+        result = !toggle_result;          ops++;
       }
     toggle_result = if_cond}            log.push({ops, toggle_result})
 
